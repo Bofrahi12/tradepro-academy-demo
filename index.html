@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<div class="announce">🚀 عرض الإطلاق: خصم <b>79%</b> لفترة محدودة — <a href="#pricing">احصل على الدورة الآن</a></div>
+<div class="announce">🚀 سعر الإطلاق: <b>$20</b> بدل <b>$97</b> — <a href="#pricing">احصل على الدورة الآن</a></div>
 
 <header class="site-header" id="site-header"></header>
 
@@ -40,6 +40,7 @@
       <a href="#pricing" class="btn btn-primary btn-lg" data-s="CTA_TEXT">احصل على الدورة الآن</a>
       <a href="course.html" class="btn btn-ghost btn-lg">استعرض المنهج</a>
     </div>
+    <div style="margin-bottom:16px"><a href="#" id="free-preview-btn" class="btn btn-ghost" style="display:none;border-style:dashed">🎁 شاهد درساً مجانياً</a></div>
     <div style="margin-bottom:16px;font-size:.92rem;color:var(--muted)">مشترك بالفعل؟ <a href="login.html" style="color:var(--green);font-weight:700">ادخل لمنصتك ←</a></div>
     <div class="trust-line" style="justify-content:center">✓ <span data-s="TRUST_LINE">تعلّم خطوة بخطوة من الأساسيات إلى بناء خطة تداول منظمة</span></div>
     <div class="trust-badges" style="justify-content:center">
@@ -193,7 +194,7 @@
     <p class="section-sub reveal">دفعة واحدة — وصول مدى الحياة مع التحديثات.</p>
     <div class="pricing-wrap">
       <div class="pricing-card reveal">
-        <div class="limited">عرض محدود</div>
+        <div class="limited">عرض الإطلاق</div>
         <h3 style="margin-bottom:14px">📦 كل ما ستحصل عليه</h3>
         <ul class="value-stack">
           <li><span class="tick">✓</span><div>المنهج الكامل: 10 Modules<small>من الأساسيات إلى بناء خطة تداولك الخاصة</small></div></li>
@@ -232,6 +233,17 @@
   <div class="container">
     <h2 class="section-title reveal">الأسئلة الشائعة</h2>
     <div class="accordion" id="faq-acc"></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" style="padding-top:0">
+  <div class="container">
+    <div class="final-cta reveal" style="padding:44px 28px">
+      <h2 style="margin-bottom:10px">💬 عندك سؤال قبل ما تشري؟</h2>
+      <p style="color:var(--muted);margin-bottom:24px">راسلنا على واتساب وسنجاوبك قبل أن تقرر.</p>
+      <a href="#" id="wa-btn" target="_blank" rel="noopener" class="btn btn-primary btn-lg">راسلنا على واتساب</a>
+    </div>
   </div>
 </section>
 
@@ -286,6 +298,9 @@
       sl.textContent = `وفّر ${save} ${cur} (${pct}%)`;
       sl.style.display = 'inline-block';
     }
+    // WhatsApp support link
+    const waNum = (st.SUPPORT_WHATSAPP || '').replace(/\D/g, '').replace(/^0/, '212');
+    if (waNum) document.getElementById('wa-btn').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('مرحباً، عندي سؤال حول دورة ' + (st.COURSE_NAME || ''));
   });
 
   // sticky mobile CTA: show after hero, hide near pricing
@@ -314,6 +329,13 @@
         </div></div>
       </div>`).join('');
     App.courseSchema(s, mods);
+    // free preview button -> first free-preview lesson
+    const fp = mods.flatMap((m) => m.lessons).find((l) => l.is_free_preview);
+    if (fp) {
+      const b = document.getElementById('free-preview-btn');
+      b.style.display = '';
+      b.href = 'lesson.html?id=' + fp.id;
+    }
   } catch (e) { /* ignore */ }
 
   // bonuses + FAQ (public content)
