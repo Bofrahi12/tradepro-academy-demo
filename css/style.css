@@ -291,6 +291,20 @@ table.admin-table{width:100%;border-collapse:collapse;font-size:.9rem}
   font-size:.85rem;margin-left:8px}
 @media(max-width:719px){.sticky-cta.on{display:flex}body.has-sticky{padding-bottom:76px}}
 
+/* ---------- VSL funnel: announce bar / hero video / value stack ---------- */
+.announce{background:var(--grad);color:#04120c;text-align:center;font-weight:800;
+  font-family:var(--font-h);padding:10px 16px;font-size:.92rem;position:relative;z-index:60}
+.announce a{color:#04120c;text-decoration:underline}
+.hero-video{max-width:880px;margin:32px auto;border-radius:20px;overflow:hidden;
+  border:1px solid var(--card-border);box-shadow:var(--shadow);background:#000}
+.hero-video video{width:100%;display:block;aspect-ratio:16/9;background:#000}
+.value-stack{list-style:none;text-align:right;margin:0 0 22px;display:grid;gap:10px}
+.value-stack li{display:flex;gap:12px;align-items:flex-start;background:rgba(0,229,160,.05);
+  border:1px solid rgba(0,229,160,.18);border-radius:12px;padding:12px 16px;font-size:.94rem}
+.value-stack li .tick{flex:none;width:26px;height:26px;border-radius:50%;background:var(--grad);
+  color:#04120c;display:grid;place-items:center;font-weight:900;font-size:.8rem}
+.value-stack li small{display:block;color:var(--muted);font-size:.82rem}
+
 /* ---------- strategies gallery ---------- */
 .strat-grid{display:grid;gap:18px}
 @media(min-width:720px){.strat-grid{grid-template-columns:repeat(2,1fr)}}
