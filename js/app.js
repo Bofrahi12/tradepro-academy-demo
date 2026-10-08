@@ -48,7 +48,8 @@
     mount.innerHTML = `
       <div class="container">
         <a class="logo" href="index.html"><span class="logo-mark">T</span><span data-s="COURSE_NAME">TradePro Academy</span></a>
-        <nav class="nav-links">${links.map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}
+        <button class="menu-toggle" id="menu-toggle" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+        <nav class="nav-links" id="main-nav">${links.map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}
           ${user && user.role === 'admin' ? '<a href="admin.html">لوحة الإدارة</a>' : ''}
           ${user && user.enrolled ? '<a href="student.html">منصتي</a>' : ''}
         </nav>
@@ -60,6 +61,12 @@
                <a class="btn btn-primary btn-sm" href="register.html">ابدأ الآن</a>`}
         </div>
       </div>`;
+    const menu = document.getElementById('menu-toggle');
+    const nav = document.getElementById('main-nav');
+    if (menu && nav) menu.onclick = () => {
+      const open = nav.classList.toggle('open');
+      menu.setAttribute('aria-expanded', String(open));
+    };
     const lo = document.getElementById('logout-btn');
     if (lo) lo.onclick = async () => { await Store.logout(); location.href = 'index.html'; };
     // apply course name from settings
@@ -144,7 +151,7 @@
   }
 
   window.App = { toast, initReveal, initAccordion, renderHeader, applySettings, videoEmbed, esc, fmtPrice, courseSchema, requireLoginRedirect };
-  document.addEventListener('DOMContentListener', () => { initReveal(); initAccordion(); });
+  document.addEventListener('DOMContentLoaded', () => { initReveal(); initAccordion(); });
 })();
 
 // ---- demo-only: resolve absolute app paths to relative demo pages ----

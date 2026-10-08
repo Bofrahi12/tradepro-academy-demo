@@ -35,6 +35,11 @@
         <a href="course.html" class="btn btn-ghost btn-lg">استعرض المنهج</a>
       </div>
       <div class="trust-line">✓ <span data-s="TRUST_LINE">تعلّم خطوة بخطوة من الأساسيات إلى بناء خطة تداول منظمة</span></div>
+      <div class="trust-badges">
+        <span><b>✓</b> وصول مدى الحياة</span>
+        <span><b>✓</b> تحديثات مجانية</span>
+        <span><b>✓</b> من الهاتف أو الكمبيوتر</span>
+      </div>
     </div>
     <div class="hero-visual reveal">
       <div class="hero-card">
@@ -85,6 +90,19 @@
       <div class="glass reveal"><span class="solution-tag">بدل القرارات العاطفية</span><h3>انضباط نفسي مبني على قواعد</h3><p>Module كامل في Trading Psychology يعلمك كيف تلتزم بالخطة حتى في أصعب اللحظات.</p></div>
       <div class="glass reveal"><span class="solution-tag">بدل ضعف إدارة المخاطر</span><h3>إدارة رأس مال صارمة</h3><p>تتعلم حساب حجم الصفقة ووقف الخسارة ونسبة المخاطرة إلى العائد قبل أي دخول.</p></div>
       <div class="glass reveal"><span class="solution-tag">بدل كثرة المؤشرات</span><h3>Price Action واضح وبسيط</h3><p>قراءة حركة السعر الخام وبناء استراتيجية بقواعد دخول وخروج قابلة للاختبار.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how" style="padding-top:0">
+  <div class="container">
+    <h2 class="section-title reveal">كيف تبدأ؟</h2>
+    <p class="section-sub reveal">ثلاث خطوات فقط تفصلك عن أول درس.</p>
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>احصل على الدورة</h3><p>اضغط زر الشراء وأتمم الدفع الآمن في أقل من دقيقتين.</p></div>
+      <div class="step reveal"><div class="n">2</div><h3>ادخل منصتك الخاصة</h3><p>تحصل فوراً على الوصول إلى بوابة الطالب بجميع الدروس والموارد.</p></div>
+      <div class="step reveal"><div class="n">3</div><h3>تعلّم خطوة بخطوة</h3><p>تابع الدروس بالترتيب، وطبّق على الشارت، وابنِ خطة تداولك.</p></div>
     </div>
   </div>
 </section>
@@ -160,6 +178,7 @@
         <div class="limited">عرض محدود</div>
         <div class="price-old" id="price-old"></div>
         <div class="price-now" id="price-now"></div>
+        <div><span class="save-line" id="save-line" style="display:none"></span></div>
         <p style="color:var(--muted);font-size:.9rem;margin:6px 0 4px">دفعة واحدة · وصول مدى الحياة</p>
         <ul class="bonus-list" id="bonus-list"></ul>
         <div class="coupon-row">
@@ -211,6 +230,12 @@
   </div>
 </footer>
 
+<!-- sticky mobile CTA -->
+<div class="sticky-cta on" id="sticky-cta">
+  <div class="p"><small id="sticky-old"></small><span id="sticky-now"></span></div>
+  <a href="#pricing" class="btn btn-primary btn-sm" style="padding:12px 26px">احصل على الدورة</a>
+</div>
+
 <script>
 (async function () {
   await App.renderHeader();
@@ -226,7 +251,30 @@
     // pricing
     document.getElementById('price-old').textContent = App.fmtPrice(st, 'ORIGINAL_PRICE');
     document.getElementById('price-now').textContent = App.fmtPrice(st, 'COURSE_PRICE');
+    document.getElementById('sticky-old').textContent = App.fmtPrice(st, 'ORIGINAL_PRICE');
+    document.getElementById('sticky-now').textContent = App.fmtPrice(st, 'COURSE_PRICE');
+    const oldP = parseFloat(st.ORIGINAL_PRICE), nowP = parseFloat(st.COURSE_PRICE), cur = st.CURRENCY || '$';
+    if (oldP > nowP && nowP > 0) {
+      const save = Math.round(oldP - nowP), pct = Math.round((save / oldP) * 100);
+      const sl = document.getElementById('save-line');
+      sl.textContent = `وفّر ${save} ${cur} (${pct}%)`;
+      sl.style.display = 'inline-block';
+    }
   });
+
+  // sticky mobile CTA: show after hero, hide near pricing
+  const sticky = document.getElementById('sticky-cta');
+  const pricing = document.getElementById('pricing');
+  const onScroll = () => {
+    const past = window.scrollY > 500;
+    const nearPricing = pricing.getBoundingClientRect().top < window.innerHeight * 0.7 &&
+                        pricing.getBoundingClientRect().bottom > 0;
+    const show = past && !nearPricing;
+    sticky.classList.toggle('show', show);
+    document.body.classList.toggle('has-sticky', show);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   // curriculum accordion
   try {
@@ -260,7 +308,7 @@
 
   // testimonials (only real ones added from admin — never fabricated)
   try {
-    const list = Store.demo ? (await Store.adminList('testimonials')).filter(t => t.is_visible) : [];
+    const list = (await Store.publicContent()).testimonials || [];
     const w = document.getElementById('testi-wrap');
     if (list && list.length) {
       w.innerHTML = `<div class="testi-grid">` + list.map((t) => `
