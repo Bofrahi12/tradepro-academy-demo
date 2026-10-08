@@ -291,6 +291,18 @@ table.admin-table{width:100%;border-collapse:collapse;font-size:.9rem}
   font-size:.85rem;margin-left:8px}
 @media(max-width:719px){.sticky-cta.on{display:flex}body.has-sticky{padding-bottom:76px}}
 
+/* ---------- strategies gallery ---------- */
+.strat-grid{display:grid;gap:18px}
+@media(min-width:720px){.strat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.strat-grid{grid-template-columns:repeat(3,1fr)}}
+.strat-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);
+  overflow:hidden;transition:transform .2s ease,border-color .2s}
+.strat-card:hover{transform:translateY(-4px);border-color:rgba(0,229,160,.3)}
+.strat-card img{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--card-border)}
+.strat-card .sbody{padding:20px 22px}
+.strat-card h3{margin-bottom:8px;font-size:1.08rem}
+.strat-card p{color:var(--muted);font-size:.92rem}
+
 /* ---------- reveal animation ---------- */.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
