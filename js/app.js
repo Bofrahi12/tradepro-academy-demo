@@ -55,7 +55,8 @@
         </nav>
         <div class="header-actions">
           ${user
-            ? `<span style="color:var(--muted);font-size:.9rem">مرحباً، ${esc(user.name.split(' ')[0])}</span>
+            ? `${user.role !== 'admin' && !user.enrolled ? '<a class="btn btn-primary btn-sm" href="/#pricing">أكمل الشراء</a>' : ''}
+               <span style="color:var(--muted);font-size:.9rem">مرحباً، ${esc(user.name.split(' ')[0])}</span>
                <button class="btn btn-ghost btn-sm" id="logout-btn">خروج</button>`
             : `<a class="btn btn-ghost btn-sm" href="login.html">دخول</a>
                <a class="btn btn-primary btn-sm" href="register.html">ابدأ الآن</a>`}
