@@ -333,8 +333,8 @@
         </div></div>
       </div>`).join('');
     App.courseSchema(s, mods);
-    // free preview button -> first free-preview lesson
-    const fp = mods.flatMap((m) => m.lessons).find((l) => l.is_free_preview);
+    // free preview button -> first free-preview lesson WITH a video
+    const fp = mods.flatMap((m) => m.lessons).find((l) => l.is_free_preview && l.has_video);
     if (fp) {
       const b = document.getElementById('free-preview-btn');
       b.style.display = '';
