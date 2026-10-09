@@ -47,7 +47,7 @@
       <span><b>✓</b> وصول مدى الحياة</span>
       <span><b>✓</b> تحديثات مجانية</span>
       <span><b>✓</b> من الهاتف أو الكمبيوتر</span>
-      <span><b>🛡️</b> ضمان استرداد 7 أيام</span>
+      <span><b>🛡️</b> ضمان استرداد <span class="gdays">7</span> أيام</span>
     </div>
   </div>
 </section>
@@ -222,7 +222,7 @@
     <p class="section-sub reveal">دفعة واحدة — وصول مدى الحياة مع التحديثات.</p>
     <div class="guarantee-box reveal">
       <div class="g-icon">🛡️</div>
-      <div><h3>ضمان استرداد كامل لمدة 7 أيام</h3><p>إذا لم تعجبك الدورة لأي سبب خلال 7 أيام من الشراء، نرد لك المبلغ كاملاً — بدون أسئلة.</p></div>
+      <div><h3>ضمان استرداد كامل لمدة <span class="gdays">7</span> أيام</h3><p>إذا لم تعجبك الدورة لأي سبب خلال <span class="gdays">7</span> أيام من الشراء، نرد لك المبلغ كاملاً — بدون أسئلة.</p></div>
     </div>
     <div class="pricing-wrap">
       <div class="pricing-card reveal">
@@ -246,7 +246,7 @@
         </div>
         <div class="coupon-msg" id="coupon-msg"></div>
         <button class="btn btn-primary btn-lg btn-block" id="buy-btn">اشترِ الدورة الآن</button>
-        <p style="color:var(--muted);font-size:.82rem;margin-top:12px">🔒 دفع آمن · وصول فوري بعد إتمام الشراء<br>🛡️ ضمان استرداد كامل لمدة 7 أيام</p>
+        <p style="color:var(--muted);font-size:.82rem;margin-top:12px">🔒 دفع آمن · وصول فوري بعد إتمام الشراء<br>🛡️ ضمان استرداد كامل لمدة <span class="gdays">7</span> أيام</p>
       </div>
     </div>
   </div>
@@ -297,7 +297,7 @@
   <div class="container">
     <div class="logo" style="justify-content:center;margin-bottom:10px"><img class="logo-mark" src="images/logo.svg" alt="TradePro Academy"><span data-s="COURSE_NAME">TradePro Academy</span></div>
     <p>© 2026 <span data-s="COURSE_NAME">TradePro Academy</span> — جميع الحقوق محفوظة.</p>
-    <p style="margin-top:10px"><a href="privacy.html" style="color:var(--muted)">سياسة الخصوصية</a> · <a href="terms.html" style="color:var(--muted)">شروط الاستخدام</a></p>
+    <p style="margin-top:10px"><a href="privacy.html" style="color:var(--muted)">سياسة الخصوصية</a> · <a href="terms.html" style="color:var(--muted)">شروط الاستخدام</a> · <a href="/refund" style="color:var(--muted)">سياسة الاسترداد</a> · <a href="/contact" style="color:var(--muted)">تواصل معنا</a></p>
   </div>
 </footer>
 
@@ -342,12 +342,26 @@
       sl.textContent = `وفّر ${save} ${cur} (${pct}%)`;
       sl.style.display = 'inline-block';
     }
-    // WhatsApp support link (section hidden until a number is set in admin settings)
-    const waNum = (st.SUPPORT_WHATSAPP || '').replace(/\D/g, '').replace(/^0/, '212');
+    // WhatsApp support link — proper E.164 handling (no country assumption)
+    const waRaw = String(st.SUPPORT_WHATSAPP || '').replace(/[()\s-]/g, '');
+    let waNum = '';
+    if (waRaw) {
+      if (waRaw.startsWith('+')) waNum = waRaw.slice(1).replace(/\D/g, '');
+      else if (waRaw.startsWith('00')) waNum = waRaw.slice(2).replace(/\D/g, '');
+      else {
+        const cc = String(st.SUPPORT_WHATSAPP_COUNTRY_CODE || '').replace(/\D/g, '');
+        waNum = (waRaw.startsWith('0') && cc) ? cc + waRaw.slice(1).replace(/\D/g, '') : waRaw.replace(/\D/g, '');
+      }
+    }
     if (waNum) {
       document.getElementById('wa-btn').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('مرحباً، عندي سؤال حول دورة ' + (st.COURSE_NAME || ''));
     } else {
       document.getElementById('contact').style.display = 'none';
+    }
+    // Guarantee days from settings (editable in admin)
+    const gdays = parseInt(st.GUARANTEE_DAYS, 10);
+    if (Number.isInteger(gdays) && gdays >= 0) {
+      document.querySelectorAll('.gdays').forEach((el) => { el.textContent = gdays; });
     }
   });
 
@@ -402,43 +416,48 @@
     }
   } catch (e) {}
 
-  // testimonials (only real ones added from admin — never fabricated)
+  // testimonials — hidden by default; shown only when explicitly enabled in admin (SHOW_TESTIMONIALS=1) with real entries
   try {
     const list = (await Store.publicContent()).testimonials || [];
-    const w = document.getElementById('testi-wrap');
-    if (list && list.length) {
+    const st2 = await Store.settings();
+    const show = st2.SHOW_TESTIMONIALS === '1' && list.length > 0;
+    document.getElementById('testimonials').style.display = show ? '' : 'none';
+    if (show) {
+      const w = document.getElementById('testi-wrap');
       w.innerHTML = `<div class="testi-grid">` + list.map((t) => `
         <div class="glass testi reveal"><div class="stars">★★★★★</div>
         <p>"${App.esc(t.text)}"</p><footer><b>${App.esc(t.name)}</b>${t.role ? ` · ${App.esc(t.role)}` : ''}</footer></div>`).join('') + `</div>`;
-    } else {
-      w.innerHTML = `<div class="empty-note">⭐ آراء الطلاب الحقيقية ستظهر هنا بعد إضافتها من لوحة الإدارة.</div>`;
     }
-  } catch (e) {}
+  } catch (e) { document.getElementById('testimonials').style.display = 'none'; } catch (e) {}
 
-  // coupon + buy
-  let discount = 0;
+  // coupon + buy (server is the single source of truth for pricing)
+  let appliedCoupon = '';
   document.getElementById('coupon-btn').onclick = async () => {
     const code = document.getElementById('coupon-input').value.trim();
     const msg = document.getElementById('coupon-msg');
     if (!code) return;
     try {
       const c = await Store.coupon(code);
-      discount = c.percent_off;
-      const st = await Store.settings();
-      const now = Math.round(parseFloat(st.COURSE_PRICE) * (1 - discount / 100));
-      document.getElementById('price-now').textContent = `${now} ${st.CURRENCY || '$'}`;
+      appliedCoupon = c.code;
+      document.getElementById('price-now').textContent = `${c.final} ${c.display || '$'}`;
       msg.className = 'coupon-msg ok';
-      msg.textContent = `تم تطبيق خصم ${discount}% ✓`;
+      msg.textContent = `تم تطبيق خصم ${c.percent_off}% ✓ (وفّرت ${c.discount} ${c.display || '$'})`;
     } catch {
+      appliedCoupon = '';
       msg.className = 'coupon-msg err';
       msg.textContent = 'كود الخصم غير صالح';
     }
   };
   document.getElementById('buy-btn').onclick = async () => {
     const st = await Store.settings();
-    if (st.PAYMENT_URL && !Store.demo) {
-      const sep = st.PAYMENT_URL.includes('?') ? '&' : '?';
-      location.href = discount ? st.PAYMENT_URL + sep + 'coupon_applied=' + discount : st.PAYMENT_URL;
+    const cfg = window.APP_CONFIG || {};
+    // Unified secure checkout: the server creates the Stripe session (price + coupon verified server-side).
+    if (cfg.stripe && !cfg.demo) {
+      location.href = '/offer' + (appliedCoupon ? '?coupon=' + encodeURIComponent(appliedCoupon) : '');
+      return;
+    }
+    if (st.PAYMENT_URL && !cfg.demo) {
+      location.href = st.PAYMENT_URL;
       return;
     }
     // demo / no payment URL yet: simulate enrollment
@@ -452,6 +471,8 @@
   };
 
   App.initReveal(); App.initAccordion();
+  // consent-aware analytics (GA4 / Meta Pixel only after consent)
+  try { App.initConsentAnalytics(window.APP_CONFIG || {}); } catch {}
 })();
 </script>
 </body>
