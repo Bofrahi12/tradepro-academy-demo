@@ -298,9 +298,13 @@
       sl.textContent = `وفّر ${save} ${cur} (${pct}%)`;
       sl.style.display = 'inline-block';
     }
-    // WhatsApp support link
+    // WhatsApp support link (section hidden until a number is set in admin settings)
     const waNum = (st.SUPPORT_WHATSAPP || '').replace(/\D/g, '').replace(/^0/, '212');
-    if (waNum) document.getElementById('wa-btn').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('مرحباً، عندي سؤال حول دورة ' + (st.COURSE_NAME || ''));
+    if (waNum) {
+      document.getElementById('wa-btn').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('مرحباً، عندي سؤال حول دورة ' + (st.COURSE_NAME || ''));
+    } else {
+      document.getElementById('contact').style.display = 'none';
+    }
   });
 
   // sticky mobile CTA: show after hero, hide near pricing
