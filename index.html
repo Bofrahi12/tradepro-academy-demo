@@ -155,6 +155,32 @@
   </div>
 </section>
 
+<!-- ============ FOR WHOM ============ -->
+<section id="for-whom" style="padding-top:0">
+  <div class="container">
+    <h2 class="section-title reveal">هل هذه الدورة لك؟</h2>
+    <div class="grid grid-2">
+      <div class="glass reveal" style="border-color:rgba(0,229,160,.35)">
+        <h3 style="color:var(--green);margin-bottom:14px">✅ هذه الدورة لك إذا كنت…</h3>
+        <ul class="check-list">
+          <li>مبتدئاً وتريد تعلّم التداول بطريقة منظمة من الصفر</li>
+          <li>تتداول منذ مدة لكن بدون خطة ونتائجك عشوائية</li>
+          <li>مستعداً للالتزام والتعلّم خطوة بخطوة</li>
+          <li>تفهم أن التداول مهارة تُبنى بالانضباط وإدارة المخاطر</li>
+        </ul>
+      </div>
+      <div class="glass reveal problem">
+        <h3 style="color:#ff9a9a;margin-bottom:14px">⛔ ليست لك إذا كنت…</h3>
+        <ul class="cross-list">
+          <li>تبحث عن أرباح مضمونة أو "صفقة العمر"</li>
+          <li>تريد نتائج بين ليلة وضحاها دون تعلّم والتزام</li>
+          <li>غير مستعد لاحترام إدارة المخاطر</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ INSTRUCTOR ============ -->
 <section id="instructor" style="padding-top:0">
   <div class="container">
@@ -271,6 +297,7 @@
   <div class="container">
     <div class="logo" style="justify-content:center;margin-bottom:10px"><img class="logo-mark" src="images/logo.svg" alt="TradePro Academy"><span data-s="COURSE_NAME">TradePro Academy</span></div>
     <p>© 2026 <span data-s="COURSE_NAME">TradePro Academy</span> — جميع الحقوق محفوظة.</p>
+    <p style="margin-top:10px"><a href="privacy.html" style="color:var(--muted)">سياسة الخصوصية</a> · <a href="terms.html" style="color:var(--muted)">شروط الاستخدام</a></p>
   </div>
 </footer>
 
@@ -287,6 +314,13 @@
     document.querySelector('meta[property="og:title"]').setAttribute('content', st.SEO_TITLE || '');
     document.querySelector('meta[property="og:description"]').setAttribute('content', st.META_DESCRIPTION || '');
     if (st.LOGO_URL) document.querySelector('meta[property="og:image"]').setAttribute('content', st.LOGO_URL);
+    if (st.UMAMI_WEBSITE_ID && !document.querySelector('script[data-umami]')) {
+      const sc = document.createElement('script');
+      sc.defer = true; sc.setAttribute('data-umami', '1');
+      sc.src = 'https://cloud.umami.is/script.js';
+      sc.setAttribute('data-website-id', st.UMAMI_WEBSITE_ID);
+      document.head.appendChild(sc);
+    }
     // instructor photo
     const w = document.getElementById('instructor-photo-wrap');
     w.innerHTML = st.INSTRUCTOR_IMAGE

@@ -396,6 +396,9 @@ const SETTING_GROUPS = [
   { title: '🔍 SEO', keys: [
     ['SEO_TITLE', 'عنوان SEO'], ['META_DESCRIPTION', 'وصف Meta', 'textarea'],
   ]},
+  { title: '📊 التتبع والتحليلات', keys: [
+    ['UMAMI_WEBSITE_ID', 'معرّف موقع Umami (اختياري)', null, 'ltr'],
+  ]},
 ];
 async function renderSettings() {
   const s = await Store.settings();

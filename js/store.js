@@ -24,9 +24,9 @@
   function demoSave(s) { localStorage.setItem(DEMO_KEY, JSON.stringify(s)); }
   async function demoSeed() {
     let s = demoLoad();
-    if (s && s.v === 6) return s;
+    if (s && s.v === 7) return s;
     const seed = await (await fetch('seed.json')).json();
-    s = { v: 6, session: null, users: [], enrollments: [], progress: [], notes: [],
+    s = { v: 7, session: null, users: [], enrollments: [], progress: [], notes: [],
           settings: { ...seed.settings }, modules: [], lessons: [], faqs: [], bonuses: [],
           testimonials: [], coupons: seed.coupons.map(c => ({ id: c.code, ...c, is_active: 1 })) };
     let mid = 1, lid = 1;

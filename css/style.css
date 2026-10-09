@@ -326,3 +326,7 @@ table.admin-table{width:100%;border-collapse:collapse;font-size:.9rem}
 /* ---------- reveal animation ---------- */.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+.check-list,.cross-list{list-style:none;display:grid;gap:10px;padding:0}
+.check-list li,.cross-list li{padding-right:30px;position:relative;color:var(--muted)}
+.check-list li::before{content:"✓";position:absolute;right:2px;color:var(--green);font-weight:800}
+.cross-list li::before{content:"✕";position:absolute;right:2px;color:#ff8a8a;font-weight:800}
