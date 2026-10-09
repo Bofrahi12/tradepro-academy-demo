@@ -163,7 +163,7 @@
       <div id="instructor-photo-wrap"></div>
       <div>
         <h3 data-s="INSTRUCTOR_NAME">اسم المدرب</h3>
-        <div class="role">مدرب ومحلل أسواق مالية</div>
+        <div class="role">متداول محترف · 10 سنوات خبرة</div>
         <p data-s="INSTRUCTOR_BIO"></p>
         <ul>
           <li><b>الخبرة:</b> <span data-s="INSTRUCTOR_EXPERIENCE"></span></li>
@@ -171,6 +171,7 @@
         </ul>
       </div>
     </div>
+    <div id="instructor-desk-wrap" class="reveal" style="margin-top:22px"></div>
   </div>
 </section>
 
@@ -286,6 +287,10 @@
     w.innerHTML = st.INSTRUCTOR_IMAGE
       ? `<img class="instructor-photo" src="${App.esc(st.INSTRUCTOR_IMAGE)}" alt="${App.esc(st.INSTRUCTOR_NAME)}">`
       : `<div class="instructor-photo ph">👨‍🏫</div>`;
+    const dw = document.getElementById('instructor-desk-wrap');
+    if (dw) dw.innerHTML = st.INSTRUCTOR_IMAGE_2
+      ? `<img src="${App.esc(st.INSTRUCTOR_IMAGE_2)}" alt="${App.esc(st.INSTRUCTOR_NAME)} أثناء التداول" loading="lazy" style="width:100%;border-radius:20px;border:1px solid var(--card-border)">`
+      : '';
     // pricing
     document.getElementById('price-old').textContent = App.fmtPrice(st, 'ORIGINAL_PRICE');
     document.getElementById('price-now').textContent = App.fmtPrice(st, 'COURSE_PRICE');
