@@ -24,9 +24,9 @@
   function demoSave(s) { localStorage.setItem(DEMO_KEY, JSON.stringify(s)); }
   async function demoSeed() {
     let s = demoLoad();
-    if (s && s.v === 5) return s;
+    if (s && s.v === 6) return s;
     const seed = await (await fetch('seed.json')).json();
-    s = { v: 5, session: null, users: [], enrollments: [], progress: [], notes: [],
+    s = { v: 6, session: null, users: [], enrollments: [], progress: [], notes: [],
           settings: { ...seed.settings }, modules: [], lessons: [], faqs: [], bonuses: [],
           testimonials: [], coupons: seed.coupons.map(c => ({ id: c.code, ...c, is_active: 1 })) };
     let mid = 1, lid = 1;
@@ -39,6 +39,7 @@
       mid++;
     });
     s.faqs = seed.faqs.map((f, i) => ({ id: i + 1, question: f.q, answer: f.a, sort_order: i, is_visible: 1 }));
+    s.testimonials = (seed.testimonials || []).map((t, i) => ({ id: i + 1, ...t, sort_order: i, is_visible: 1 }));
     s.bonuses = seed.bonuses.map((b, i) => ({ id: i + 1, ...b, sort_order: i, is_visible: 1 }));
     s.resources = [];
     // demo admin (NOT secure — demo only)
@@ -161,6 +162,7 @@
       return {
         faqs: s.faqs.filter(f => f.is_visible).sort((a, b) => a.sort_order - b.sort_order),
         bonuses: s.bonuses.filter(b => b.is_visible).sort((a, b) => a.sort_order - b.sort_order),
+        testimonials: s.testimonials.filter(t => t.is_visible).sort((a, b) => a.sort_order - b.sort_order),
       };
     },
     async adminUsers() {

@@ -305,6 +305,12 @@ table.admin-table{width:100%;border-collapse:collapse;font-size:.9rem}
   color:#04120c;display:grid;place-items:center;font-weight:900;font-size:.8rem}
 .value-stack li small{display:block;color:var(--muted);font-size:.82rem}
 
+.guarantee-box{max-width:640px;margin:0 auto 26px;display:flex;gap:16px;align-items:center;
+  background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.3);border-radius:18px;padding:22px 26px}
+.guarantee-box .g-icon{font-size:2.2rem;flex:none}
+.guarantee-box h3{margin-bottom:4px}
+.guarantee-box p{color:var(--muted);font-size:.93rem}
+
 /* ---------- strategies gallery ---------- */
 .strat-grid{display:grid;gap:18px}
 @media(min-width:720px){.strat-grid{grid-template-columns:repeat(2,1fr)}}
