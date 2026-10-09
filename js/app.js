@@ -47,7 +47,7 @@
     ];
     mount.innerHTML = `
       <div class="container">
-        <a class="logo" href="index.html"><span class="logo-mark">T</span><span data-s="COURSE_NAME">TradePro Academy</span></a>
+        <a class="logo" href="index.html"><img class="logo-mark" src="images/logo.svg" alt="TradePro Academy"><span data-s="COURSE_NAME">TradePro Academy</span></a>
         <button class="menu-toggle" id="menu-toggle" aria-label="فتح القائمة" aria-expanded="false">☰</button>
         <nav class="nav-links" id="main-nav">${links.map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}
           ${user && user.role === 'admin' ? '<a href="admin.html">لوحة الإدارة</a>' : ''}
